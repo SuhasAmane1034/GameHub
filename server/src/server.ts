@@ -35,18 +35,27 @@ const PORT = process.env.PORT || 5001;
 
 // Middlewares
 const allowedOrigins = process.env.FRONTEND_URL 
-  ? process.env.FRONTEND_URL.split(',') 
+  ? process.env.FRONTEND_URL.split(',').map(url => url.trim().replace(/\/$/, '')) 
   : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176'];
+
+const isOriginAllowed = (origin: string | undefined): boolean => {
+  if (!origin || process.env.NODE_ENV !== 'production' || allowedOrigins.includes('*')) {
+    return true;
+  }
+  const cleanOrigin = origin.trim().replace(/\/$/, '');
+  return (
+    allowedOrigins.includes(cleanOrigin) || 
+    cleanOrigin.startsWith('http://localhost:') ||
+    /\.vercel\.app$/.test(cleanOrigin)
+  );
+};
 
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (!origin || process.env.NODE_ENV !== 'production' || allowedOrigins.includes('*')) {
+    if (isOriginAllowed(origin)) {
       return callback(null, true);
     }
-    // Check if origin matches allowed origins or matches standard localhost patterns
-    if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
-      return callback(null, true);
-    }
+    console.warn(`⚠️ CORS blocked origin: ${origin}. Allowed origins:`, allowedOrigins);
     return callback(new Error('Not allowed by CORS'));
   },
   credentials: true
@@ -59,7 +68,12 @@ app.use(express.json());
 const httpServer = createServer(app);
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : '*',
+    origin: (origin, callback) => {
+      if (isOriginAllowed(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }
