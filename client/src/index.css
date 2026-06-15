@@ -1,0 +1,260 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Dynamic Theme Variable Defaults */
+  --color-game-bg: #0B1020;
+  --color-game-card: #141B34;
+  --color-game-primary: #5B8CFF;
+  --color-game-secondary: #8B5CF6;
+  --color-game-success: #22C55E;
+  --color-game-warning: #F59E0B;
+  --color-game-danger: #EF4444;
+  --color-game-text: #FFFFFF;
+  --color-game-muted: #94A3B8;
+
+  --theme-border-radius: 16px;
+  --font-family: 'Inter', sans-serif;
+  --animation-intensity: 1s; /* Premium speed default */
+}
+
+@layer base {
+  body {
+    @apply bg-game-bg text-game-text antialiased overflow-x-hidden selection:bg-game-secondary selection:text-white;
+    font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--color-game-bg);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family), 'Outfit', sans-serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-game-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-game-primary);
+}
+
+/* Themeable Border Radius Utilities */
+.theme-rounded {
+  border-radius: var(--theme-border-radius);
+}
+
+.theme-rounded-inner {
+  border-radius: calc(var(--theme-border-radius) * 0.7);
+}
+
+/* Themeable Card Styles */
+.theme-card-glass {
+  background: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-game-border);
+}
+
+.theme-card-rounded {
+  background: var(--color-game-card);
+  border: 1px solid var(--color-game-border);
+}
+
+.theme-card-sharp {
+  background: var(--color-game-card);
+  border: 1px solid var(--color-game-border);
+  border-radius: 0px !important;
+}
+
+.theme-card-elevated {
+  background: var(--color-game-card);
+  border: 1px solid var(--color-game-border-dark);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Neon Glow Animations */
+.glow-primary {
+  box-shadow: 0 0 15px rgba(var(--color-game-primary-rgb, 91, 140, 255), 0.3);
+}
+
+.glow-secondary {
+  box-shadow: 0 0 15px rgba(var(--color-game-secondary-rgb, 139, 92, 246), 0.3);
+}
+
+/* Themeable Background Styles */
+.theme-bg-solid {
+  background-color: var(--color-game-bg);
+}
+
+.theme-bg-glassmorphism {
+  background: linear-gradient(135deg, var(--color-game-bg) 0%, rgba(var(--color-game-card-rgb, 20, 27, 52), 0.8) 100%);
+  backdrop-filter: blur(20px);
+}
+
+.theme-bg-gradient {
+  background: radial-gradient(circle at 50% 50%, rgba(var(--color-game-secondary-rgb, 139, 92, 246), 0.12) 0%, var(--color-game-bg) 80%);
+}
+
+.theme-bg-neon {
+  background: var(--color-game-bg);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(var(--color-game-primary-rgb, 91, 140, 255), 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(var(--color-game-secondary-rgb, 139, 92, 246), 0.08) 0%, transparent 40%);
+}
+
+.theme-bg-rgb {
+  background: var(--color-game-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-bg-rgb::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 180deg,
+    rgba(var(--color-game-primary-rgb, 91, 140, 255), 0.05) 0deg,
+    rgba(var(--color-game-secondary-rgb, 139, 92, 246), 0.05) 120deg,
+    rgba(239, 68, 68, 0.05) 240deg,
+    rgba(var(--color-game-primary-rgb, 91, 140, 255), 0.05) 360deg
+  );
+  animation: rgb-rotate calc(20s * var(--animation-intensity-factor, 1)) linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes rgb-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Intercept Tailwind Border classes for light/dark borders */
+.border-slate-800,
+.border-slate-800\/60,
+.border-slate-800\/80 {
+  border-color: var(--color-game-border) !important;
+}
+
+.border-slate-900 {
+  border-color: var(--color-game-border-dark) !important;
+}
+
+/* Intercept Tailwind arbitrary background and gradient classes for dark/light themes */
+.bg-\[\#0B1020\] {
+  background-color: var(--color-game-bg) !important;
+}
+.bg-\[\#141B34\] {
+  background-color: var(--color-game-card) !important;
+}
+.bg-\[\#0B1020\]\/20 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.2) !important;
+}
+.bg-\[\#0B1020\]\/40 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.4) !important;
+}
+.bg-\[\#0B1020\]\/50 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.5) !important;
+}
+.bg-\[\#0B1020\]\/60 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.6) !important;
+}
+.bg-\[\#0B1020\]\/70 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.7) !important;
+}
+.bg-\[\#0B1020\]\/80 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.8) !important;
+}
+.bg-\[\#0B1020\]\/90 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.9) !important;
+}
+.bg-\[\#0B1020\]\/95 {
+  background-color: rgba(var(--color-game-bg-rgb, 11, 16, 32), 0.95) !important;
+}
+.bg-\[\#141B34\]\/10 {
+  background-color: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.1) !important;
+}
+.bg-\[\#141B34\]\/30 {
+  background-color: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.3) !important;
+}
+.bg-\[\#141B34\]\/40 {
+  background-color: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.4) !important;
+}
+.bg-\[\#141B34\]\/80 {
+  background-color: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.8) !important;
+}
+.bg-\[\#141B34\]\/95 {
+  background-color: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.95) !important;
+}
+.from-\[\#141B34\]\/10 {
+  --tw-gradient-from: rgba(var(--color-game-card-rgb, 20, 27, 52), 0.1) var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgba(var(--color-game-card-rgb, 20, 27, 52), 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+.to-\[\#0B1020\] {
+  --tw-gradient-to: var(--color-game-bg, #0B1020) var(--tw-gradient-to-position) !important;
+}
+
+/* Dynamic Animation Scaling */
+.transition-theme {
+  transition: all calc(0.3s * var(--animation-intensity-factor, 1)) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Button & Input Base Overrides to match theme */
+.game-input {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-game-border);
+  border-radius: calc(var(--theme-border-radius) * 0.5);
+  color: var(--color-game-text);
+  transition: all 0.2s ease;
+}
+
+.game-input:focus {
+  border-color: var(--color-game-primary);
+  box-shadow: 0 0 10px rgba(var(--color-game-primary-rgb, 91, 140, 255), 0.2);
+  outline: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-game-primary) 0%, var(--color-game-secondary) 100%);
+  color: #FFFFFF;
+  border-radius: calc(var(--theme-border-radius) * 0.5);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(var(--color-game-primary-rgb, 91, 140, 255), 0.2);
+  transition: all calc(0.2s * var(--animation-intensity-factor, 1)) ease;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--color-game-secondary-rgb, 139, 92, 246), 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-game-border);
+  color: var(--color-game-muted);
+  border-radius: calc(var(--theme-border-radius) * 0.5);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-game-text);
+}
